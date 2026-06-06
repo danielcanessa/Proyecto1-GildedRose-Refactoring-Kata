@@ -1,30 +1,52 @@
-# Gilded Rose starting position in Java
+# Proyecto 1: Gilded Rose Refactoring Kata
 
-## Run the TextTest Fixture from Command-Line
+## Introducción
 
+Este proyecto se desarrolla como parte del curso **PSWE-03 Construcción y Mantenimiento de Software**. El trabajo utiliza la kata [Gilded Rose](https://github.com/emilybache/GildedRose-Refactoring-Kata) como base para analizar y mejorar código legado.
+
+El objetivo es identificar problemas de diseño y refactorizar la solución aplicando principios como DRY, SRP, KISS, modularidad, separación de responsabilidades, bajo acoplamiento, alta cohesión y SOLID. Las pruebas automatizadas permiten documentar las reglas de negocio y comprobar que el comportamiento se conserve durante la refactorización.
+
+## Historial de cambios
+
+| Commit | ¿Por qué este cambio? |
+|---|---|
+| `05fca6e` - Agregar pruebas unitarias para Gilded Rose | Para refactorizar código se necesita un arnés de pruebas sólido que permita detectar y evitar regresiones. |
+
+## Ejecución de pruebas
+
+### Requisitos
+
+- JDK 21 configurado como Java activo del entorno.
+- No es necesario instalar Gradle; el proyecto incluye Gradle Wrapper.
+
+### Ejecutar las pruebas unitarias
+
+En macOS o Linux:
+
+```bash
+./gradlew test
 ```
-./gradlew -q text
+
+En Windows:
+
+```powershell
+.\gradlew.bat test
 ```
 
-### Specify Number of Days
+Una ejecución correcta finaliza con:
 
-For e.g. 10 days:
-
-```
-./gradlew -q text --args 10
+```text
+BUILD SUCCESSFUL
 ```
 
-You should make sure the gradle commands shown above work when you execute them in a terminal before trying to use TextTest (see below).
+Para forzar nuevamente la ejecución de todas las pruebas:
 
+```bash
+./gradlew test --rerun-tasks
+```
 
-## Run the TextTest approval test that comes with this project
+El reporte HTML se genera en:
 
-There are instructions in the [TextTest Readme](../texttests/README.md) for setting up TextTest. What's unusual for the Java version is there are two executables listed in [config.gr](../texttests/config.gr) for Java. The first uses Gradle wrapped in a python script. Uncomment these lines to use it:
-
-    executable:${TEXTTEST_HOME}/Java/texttest_rig.py
-    interpreter:python
-
-The other relies on your CLASSPATH being set correctly in [environment.gr](../texttests/environment.gr). Uncomment these lines to use it instead:
-
-    executable:com.gildedrose.TexttestFixture
-    interpreter:java
+```text
+build/reports/tests/test/index.html
+```

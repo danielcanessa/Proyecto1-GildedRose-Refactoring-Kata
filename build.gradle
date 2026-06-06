@@ -2,6 +2,12 @@ plugins {
     id 'java'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -14,7 +20,10 @@ dependencies {
 
 group = 'com.gildedrose'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 8
+}
 
 test {
     useJUnitPlatform()
