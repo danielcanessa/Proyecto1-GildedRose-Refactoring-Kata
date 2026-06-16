@@ -17,53 +17,45 @@ class GildedRose {
     }
 
     public void updateQuality() {
-        for (int i = 0; i < items.length; i++) {
-            if (!items[i].name.equals(AGED_BRIE)
-                    && !items[i].name.equals(BACKSTAGE_PASS)) {
-                if (items[i].quality > MIN_QUALITY) {
-                    if (!items[i].name.equals(SULFURAS)) {
-                        decreaseQuality(items[i]);
-                    }
-                }
+        for (Item item : items) {
+            boolean isAgedBrie = item.name.equals(AGED_BRIE);
+            boolean isBackstagePass = item.name.equals(BACKSTAGE_PASS);
+            boolean isSulfuras = item.name.equals(SULFURAS);
+            boolean isNormalItem = !isAgedBrie && !isBackstagePass && !isSulfuras;
+            boolean shouldDecreasesSellIn = !isSulfuras;
+
+            // Aplica los cambios de calidad antes de reducir sellIn.
+            if (isNormalItem) {
+                decreaseQuality(item);
             } else {
-                if (items[i].quality < MAX_QUALITY) {
-                    increaseQuality(items[i]);
+                if (isAgedBrie || isBackstagePass) {
+                    increaseQuality(item);
 
-                    if (items[i].name.equals(BACKSTAGE_PASS)) {
-                        if (items[i].sellIn < 11) {
-                            if (items[i].quality < MAX_QUALITY) {
-                                increaseQuality(items[i]);
-                            }
+                    if (isBackstagePass) {
+                        if (item.sellIn < 11) {
+                            increaseQuality(item);
                         }
 
-                        if (items[i].sellIn < 6) {
-                            if (items[i].quality < MAX_QUALITY) {
-                                increaseQuality(items[i]);
-                            }
+                        if (item.sellIn < 6) {
+                            increaseQuality(item);
                         }
                     }
                 }
             }
 
-            if (!items[i].name.equals(SULFURAS)) {
-                decreaseSellIn(items[i]);
+            // Reduce sellIn solo para articulos que no son legendarios.
+            if (shouldDecreasesSellIn) {
+                decreaseSellIn(item);
             }
 
-            if (isExpired(items[i])) {
-                if (!items[i].name.equals(AGED_BRIE)) {
-                    if (!items[i].name.equals(BACKSTAGE_PASS)) {
-                        if (items[i].quality > MIN_QUALITY) {
-                            if (!items[i].name.equals(SULFURAS)) {
-                                decreaseQuality(items[i]);
-                            }
-                        }
-                    } else {
-                        items[i].quality = items[i].quality - items[i].quality;
-                    }
-                } else {
-                    if (items[i].quality < MAX_QUALITY) {
-                        increaseQuality(items[i]);
-                    }
+            // Aplica reglas adicionales cuando el articulo ya vencio.
+            if (isExpired(item)) {
+                if (isAgedBrie) {
+                    increaseQuality(item);
+                } else if (isBackstagePass) {
+                    item.quality = MIN_QUALITY;
+                } else if (isNormalItem) {
+                    decreaseQuality(item);
                 }
             }
         }
