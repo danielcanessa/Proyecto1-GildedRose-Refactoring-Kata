@@ -4,7 +4,15 @@
 
 Este proyecto se desarrolla como parte del curso **PSWE-03 Construcción y Mantenimiento de Software**. El trabajo utiliza la kata [Gilded Rose](https://github.com/emilybache/GildedRose-Refactoring-Kata) como base para analizar y mejorar código legado.
 
-El objetivo es identificar problemas de diseño y refactorizar la solución aplicando principios como DRY, SRP, KISS, modularidad, separación de responsabilidades, bajo acoplamiento, alta cohesión y SOLID. Las pruebas automatizadas permiten documentar las reglas de negocio y comprobar que el comportamiento se conserve durante la refactorización.
+El objetivo es identificar problemas de diseño y refactorizar la solución aplicando principios como DRY, KISS y SOLID. Las pruebas automatizadas permiten documentar las reglas de negocio y comprobar que el comportamiento se conserve durante la refactorización.
+
+Integrantes del equipo:
+
+- Daniel Canessa Valverde
+- David Cárdenas Orozco
+- Edward Antonio Cerdas Rodriguez
+- Emanuel Hernandez Castillo
+- Rafael Zúñiga Vindas
 
 ## Problemas identificados
 
@@ -26,7 +34,12 @@ Los siguientes problemas se identificaron en `GildedRose.java`:
 
 | Commit | ¿Por qué este cambio? |
 |---|---|
+| `f084870` - Agregar proyecto Java base de Gilded Rose | Para contar con una versión inicial funcional de la kata sobre la cual analizar el problema y construir el proceso de refactorización. |
 | `05fca6e` - Agregar pruebas unitarias para Gilded Rose | Para refactorizar código se necesita un arnés de pruebas sólido que permita detectar y evitar regresiones. |
+| `9f008e0` - Actualizar documentación y configurar Java 21 | Para que el proyecto sea más fácil de ejecutar en el entorno de trabajo y el equipo tenga una referencia clara de uso. |
+| `a87cfff` - Documentar problemas identificados en GildedRose | Para identificar los motivos para una refactorización del código antes de modificar el diseño y alinear los cambios con problemas concretos. |
+| `2b4acb7` - Extraer constantes y helpers de calidad | Para reducir duplicación y hacer explícitas reglas básicas del dominio antes de reorganizar la lógica principal. |
+| `54cd130` - Simplificar condiciones de updateQuality | Para facilitar la lectura del flujo actual eliminando lógica negada y preparando el código para separar reglas por tipo de artículo. |
 
 ## Ejecución de pruebas
 
