@@ -5,6 +5,7 @@ class GildedRose {
     private static final String AGED_BRIE = "Aged Brie";
     private static final String BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert";
     private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
+    private static final String CONJURED = "Conjured Mana Cake";
 
     // Limites de calidad permitidos por las reglas del inventario.
     private static final int MIN_QUALITY = 0;
@@ -21,11 +22,16 @@ class GildedRose {
             boolean isAgedBrie = item.name.equals(AGED_BRIE);
             boolean isBackstagePass = item.name.equals(BACKSTAGE_PASS);
             boolean isSulfuras = item.name.equals(SULFURAS);
-            boolean isNormalItem = !isAgedBrie && !isBackstagePass && !isSulfuras;
+            boolean isConjured = item.name.equals(CONJURED);
+            boolean isNormalItem = !isAgedBrie && !isBackstagePass && !isSulfuras && !isConjured;
             boolean shouldDecreasesSellIn = !isSulfuras;
 
             // Aplica los cambios de calidad antes de reducir sellIn.
             if (isNormalItem) {
+                decreaseQuality(item);
+            } else if (isConjured) {
+                // Los articulos conjurados degradan el doble que los normales.
+                decreaseQuality(item);
                 decreaseQuality(item);
             } else {
                 if (isAgedBrie || isBackstagePass) {
@@ -55,6 +61,10 @@ class GildedRose {
                 } else if (isBackstagePass) {
                     item.quality = MIN_QUALITY;
                 } else if (isNormalItem) {
+                    decreaseQuality(item);
+                } else if (isConjured) {
+                    // Vencido: degrada el doble adicional (total 4 por dia).
+                    decreaseQuality(item);
                     decreaseQuality(item);
                 }
             }

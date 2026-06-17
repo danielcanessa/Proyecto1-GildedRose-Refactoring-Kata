@@ -15,6 +15,7 @@ class GildedRoseTest {
     private static final String AGED_BRIE = "Aged Brie";
     private static final String BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert";
     private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
+    private static final String CONJURED = "Conjured Mana Cake";
 
     // Verifica la degradacion normal antes y despues del vencimiento, incluido el limite minimo.
     @ParameterizedTest(name = "[{index}] {0}: sellIn {1} -> {3}, quality {2} -> {4}")
@@ -120,6 +121,35 @@ class GildedRoseTest {
 
         assertDoesNotThrow(gildedRose::updateQuality);
         assertEquals(0, gildedRose.items.length);
+    }
+
+    // Confirma que Conjured degrada dos veces mas rapido que un articulo normal.
+    @ParameterizedTest(name = "[{index}] sellIn {0} -> {2}, quality {1} -> {3}")
+    @MethodSource("conjuredItemCases")
+    void conjuredItemDegradesTwiceAsFastAsNormal(
+            int initialSellIn,
+            int initialQuality,
+            int expectedSellIn,
+            int expectedQuality) {
+        assertUpdatedItem(
+                CONJURED,
+                initialSellIn,
+                initialQuality,
+                expectedSellIn,
+                expectedQuality
+        );
+    }
+
+    private static Stream<Arguments> conjuredItemCases() {
+        return Stream.of(
+                // Dentro de fecha: degrada 2 por dia.
+                Arguments.of(5, 10, 4, 8),
+                // Vencido: degrada 4 por dia (doble del normal vencido).
+                Arguments.of(0, 10, -1, 6),
+                // El piso de calidad es 0; nunca baja de ahi.
+                Arguments.of(5, 1, 4, 0),
+                Arguments.of(0, 3, -1, 0)
+        );
     }
 
     // Crea un inventario nuevo y verifica el estado completo del articulo despues de un dia.

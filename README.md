@@ -40,6 +40,7 @@ Los siguientes problemas se identificaron en `GildedRose.java`:
 | `a87cfff` - Documentar problemas identificados en GildedRose | Para identificar los motivos para una refactorización del código antes de modificar el diseño y alinear los cambios con problemas concretos. |
 | `2b4acb7` - Extraer constantes y helpers de calidad | Para reducir duplicación y hacer explícitas reglas básicas del dominio antes de reorganizar la lógica principal. |
 | `54cd130` - Simplificar condiciones de updateQuality | Para facilitar la lectura del flujo actual eliminando lógica negada y preparando el código para separar reglas por tipo de artículo. |
+| *(próximo)* - Agregar soporte para artículos Conjured | El enunciado original exige que los artículos conjurados degraden su calidad el doble de rápido. Se agrega la constante, la rama de lógica en `updateQuality` y cuatro casos de prueba parametrizados que cubren degradación normal, degradación post-vencimiento y el límite inferior de calidad. |
 
 ## Ejecución de pruebas
 
