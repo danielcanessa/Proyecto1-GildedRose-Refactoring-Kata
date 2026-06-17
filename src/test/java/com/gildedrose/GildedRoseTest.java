@@ -164,8 +164,8 @@ class GildedRoseTest {
 
         gildedRose.updateQuality();
 
-        assertEquals(name, item.name);
-        assertEquals(expectedSellIn, item.sellIn);
-        assertEquals(expectedQuality, item.quality);
+        assertEquals(name, item.getName());
+        assertEquals(expectedSellIn, item.getSellIn());
+        assertEquals(expectedQuality, item.getQuality());
     }
 }
