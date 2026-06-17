@@ -30,6 +30,26 @@ Los siguientes problemas se identificaron en `GildedRose.java`:
 | Robustez | No se validan valores nulos ni estados iniciales inválidos | El sistema puede fallar o procesar datos incorrectos |
 | Documentación | Las reglas de negocio no están expresadas mediante métodos, nombres o comentarios claros | El mantenimiento depende de interpretar un bloque complejo de condiciones |
 
+## Patrón Strategy aplicado
+
+Como punto extra del enunciado se aplicó el patrón de comportamiento **Strategy** para desacoplar el comportamiento de cada tipo de artículo de la lógica central del inventario.
+
+| Clase | Responsabilidad |
+|---|---|
+| `Item` | Encapsula `name`, `sellIn` y `quality`; el estado solo se modifica vía getters/setters. |
+| `ItemUpdater` (interfaz) | Define el contrato de la estrategia: `update(Item)`. |
+| `AbstractItemUpdater` | Clase base que centraliza las operaciones comunes (`increaseQuality`, `decreaseQuality`, `decreaseSellIn`, `resetQuality`, `isExpired`) respetando los límites `[0, 50]` (DRY). |
+| `DefaultItemUpdater`, `AgedBrieUpdater`, `BackstagePassUpdater`, `SulfurasUpdater`, `ConjuredItemUpdater` | Una estrategia concreta por tipo de artículo. |
+| `ItemUpdaterFactory` | Mapea el nombre del artículo a su estrategia y devuelve la estrategia por defecto cuando no hay coincidencia. |
+| `GildedRose` | Recorre el inventario y delega cada artículo en la estrategia que entrega la fábrica. |
+
+Beneficios obtenidos:
+
+- **SRP:** cada clase tiene una única responsabilidad.
+- **Abierto/Cerrado:** agregar un nuevo tipo de artículo solo requiere una nueva estrategia y registrarla en la fábrica, sin modificar `GildedRose`.
+- **DRY y bajo acoplamiento:** las reglas comunes viven en la clase base y cada estrategia es independiente del resto.
+- **Mantenibilidad:** se eliminó el bloque de `if/else` por nombre dentro de `updateQuality`.
+
 ## Historial de cambios
 
 | Commit | ¿Por qué este cambio? |
@@ -40,7 +60,8 @@ Los siguientes problemas se identificaron en `GildedRose.java`:
 | `a87cfff` - Documentar problemas identificados en GildedRose | Para identificar los motivos para una refactorización del código antes de modificar el diseño y alinear los cambios con problemas concretos. |
 | `2b4acb7` - Extraer constantes y helpers de calidad | Para reducir duplicación y hacer explícitas reglas básicas del dominio antes de reorganizar la lógica principal. |
 | `54cd130` - Simplificar condiciones de updateQuality | Para facilitar la lectura del flujo actual eliminando lógica negada y preparando el código para separar reglas por tipo de artículo. |
-| *(próximo)* - Agregar soporte para artículos Conjured | El enunciado original exige que los artículos conjurados degraden su calidad el doble de rápido. Se agrega la constante, la rama de lógica en `updateQuality` y cuatro casos de prueba parametrizados que cubren degradación normal, degradación post-vencimiento y el límite inferior de calidad. |
+| `e01c623` - Agregar soporte para artículos Conjured | El enunciado original exige que los artículos conjurados degraden su calidad el doble de rápido. Se agrega la constante, la rama de lógica en `updateQuality` y cuatro casos de prueba parametrizados que cubren degradación normal, degradación post-vencimiento y el límite inferior de calidad. |
+| `dbd246f` - Aplicar el patrón Strategy | Cada tipo de artículo pasa a tener su propia estrategia de actualización (`ItemUpdater`), eliminando los `if/else` por nombre dentro de `updateQuality`. Se encapsula `Item` con getters/setters, se centralizan las operaciones comunes en `AbstractItemUpdater` (DRY) y una `ItemUpdaterFactory` resuelve la estrategia por nombre, de modo que agregar un nuevo tipo no obliga a modificar `GildedRose` (principio abierto/cerrado). Las pruebas existentes se mantienen verdes como red de seguridad. |
 
 ## Ejecución de pruebas
 
